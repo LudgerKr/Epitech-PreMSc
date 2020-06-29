@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="text-center">Historique des commandes</h1>
+    <br>
+    <form>
+        <input id="impression" name="impression" type="button" onclick="imprimer_page()" value="Imprimer / PDF " />
+    </form>
+    {% for cart in carts  %}
+        {% set priceTotal = 0 %}
+        <h2>Commande de {{ cart.cartArticle|length }} Article(s)</h2>
+        <h3>Effectué le {{ cart.updatedAt|date("d/m/Y h:m") }}</h3>
+        {% for cartArticle in cart.cartArticle %}
+            {% set priceTotal = (cartArticle.quantity * cartArticle.article.price) + priceTotal %}
+            <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+            <div class="col">
+                <a href="{{ path('article_show', {'id': cartArticle.article.id }) }}"><h2>{{ cartArticle.article.title }}</h2></a>
+                <div class="row">
+                    <img width="200" height="200" class="img-thumbnail" src="{{ cartArticle.article.imageMain }}" alt="{{ cartArticle.article.title }} image">
+                    <div class="col">
+                        <div class="row">
+                            <p class="col-6 text-center">nombre : {{ cartArticle.quantity }}</p>
+                            <p class="col-6 text-center">prix / article : {{ cartArticle.article.price }} €</p>
+                            <p class="col-6 text-center">prix total : {{ cartArticle.article.price * cartArticle.quantity }} €</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <br>
+        <p>Prix total : {{ priceTotal }}</p>
+        <script type="text/javascript">
+            function imprimer_page(){
+                window.print();
+            }
+        </script>
+    {% endfor %}
+{% endblock %}
+
+{% block title %}
+    Historique de commande
+{% endblock %}
+

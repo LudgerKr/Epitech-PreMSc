@@ -1,0 +1,15 @@
+---
+- hosts: server01_redis
+
+  tasks:
+  - name: Copy redis.conf
+    copy:
+      src: ../files/redis.conf
+      dest: /etc/redis/redis.conf
+
+  - name: Restart Redis server service
+    systemd:
+      name: redis-server.service
+      state: restarted
+      enabled: yes
+      masked: no

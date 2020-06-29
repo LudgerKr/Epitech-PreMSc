@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="text-center">
+        <h1>{{ brand.name }}</h1>
+        <img src="{{ brand.picture ?: 'https://www.labaleine.fr/sites/baleine/files/image-not-found.jpg' }}" alt="">
+    </div>
+    {% set articles = brand.articles  %}
+    {{ block("body", 'article/index.html.twig') }}
+{% endblock %}
+
+{% block title %}
+    {{ brand.name }}
+{% endblock %}
+

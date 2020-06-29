@@ -1,0 +1,69 @@
+---
+- hosts: server05_worker
+  tasks:
+
+  - name: Create app
+    file:
+      path: /home/root/app
+      state: directory
+      mode: '0755'
+
+  - name: Extract worker.tar
+    unarchive:
+      src: ../../../worker.tar
+      dest: /home/root/app
+
+  - name: Verify ~/app/worker/.env exists
+    file:
+      path: /home/root/app/.env
+      state: touch
+
+  - name: Set REDIS_HOST
+    lineinfile:
+      dest: /home/root/app/.env
+      regexp: "^REDIS_HOST="
+      line: "REDIS_HOST={{ REDIS_HOST }}"
+
+  - name: Set POSTGRESQL_HOST
+    lineinfile:
+      dest: /home/root/app/.env
+      regexp: "^POSTGRESQL_HOST="
+      line: "POSTGRESQL_HOST={{ POSTGRESQL_HOST }}"
+
+  - name: Set POSTGRESQL_DB
+    lineinfile:
+      dest: /home/root/app/.env
+      regexp: "^POSTGRESQL_DB="
+      line: "POSTGRESQL_DB={{ POSTGRESQL_DB }}"
+
+  - name: Set POSTGRESQL_USER
+    lineinfile:
+      dest: /home/root/app/.env
+      regexp: "^POSTGRESQL_USER="
+      line: "POSTGRESQL_USER={{ POSTGRESQL_USER }}"
+
+  - name: Set POSTGRESQL_PASSWORD
+    lineinfile:
+      dest: /home/root/app/.env
+      regexp: "^POSTGRESQL_PASSWORD="
+      line: "POSTGRESQL_PASSWORD={{ POSTGRESQL_PASSWORD }}"
+
+  - name: Set POSTGRESQL_PORT
+    lineinfile:
+      dest: /home/root/app/.env
+      regexp: "^POSTGRESQL_PORT="
+      line: "POSTGRESQL_PORT={{ POSTGRESQL_PORT }}"
+
+  - name: Install dependencies
+    shell: mvn -f /home/root/app/worker install
+
+  - name: Copy worker.service
+    copy:
+      src: ../files/worker.service
+      dest: /etc/systemd/system/worker.service
+
+  - name: Start Worker service
+    systemd:
+      name: worker.service
+      enabled: yes
+      state: started

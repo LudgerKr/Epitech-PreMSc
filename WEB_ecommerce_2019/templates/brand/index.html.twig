@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Brands{% endblock %}
+
+{% block body %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mt-5">
+        {% for key,brand in brands %}
+            <div class="col mb-4">
+
+            <div class="card p-1 h-100">
+                <a href="{{ path('brand_show', {'id': brand.id}) }}">
+                    <img src="{{ brand.picture ?: 'https://www.labaleine.fr/sites/baleine/files/image-not-found.jpg' }}" alt="{{ brand.name }} picture" class="card-img-top">
+                </a>
+                <div class="card-body text-center">
+                    <a href="{{ path('brand_show', {'id': brand.id}) }}"><h5 class="card-title">{{ brand.name }}</h5></a>
+                </div>
+            </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block paginator %}
+    {{ knp_pagination_render(brands) }}
+{% endblock %}

@@ -1,0 +1,16 @@
+html, body{
+	height:100%;
+	margin: 0;
+	padding: 0;
+}
+
+
+#map_canvas{
+	height: 350px;
+	width: 350px;
+}
+
+#calendar {
+	max-width: 900px;
+	margin: 0 auto;
+}

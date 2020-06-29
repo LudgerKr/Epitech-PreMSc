@@ -1,0 +1,81 @@
+---
+- hosts: server04_result
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: Creating app folder
+    file:
+      path: ~/app
+      state: directory
+      mode: '0755'
+
+  - name: Uploading to app folder
+    copy:
+      src: ../files/
+      dest: ~/app/files/
+
+  - name: Extract result.tar
+    unarchive:
+      src: ../../../result.tar
+      dest: ~/app/
+
+  - name: Verify ~/app/result/.env exists
+    file:
+      path: "~/app/result/.env"
+      state: touch
+
+  - name: Set POSTGRESQL_HOST
+    lineinfile:
+      dest: ~/app/result/.env
+      regexp: "^POSTGRESQL_HOST="
+      line: "POSTGRESQL_HOST={{ POSTGRESQL_HOST }}"
+
+  - name: Set POSTGRESQL_DB
+    lineinfile:
+      dest: ~/app/result/.env
+      regexp: "^POSTGRESQL_DB="
+      line: "POSTGRESQL_DB={{ POSTGRESQL_DB }}"
+
+  - name: Set POSTGRESQL_USER
+    lineinfile:
+      dest: ~/app/result/.env
+      regexp: "^POSTGRESQL_USER="
+      line: "POSTGRESQL_USER={{ POSTGRESQL_USER }}"
+
+  - name: Set POSTGRESQL_PASSWORD
+    lineinfile:
+      dest: ~/app/result/.env
+      regexp: "^POSTGRESQL_PASSWORD="
+      line: "POSTGRESQL_PASSWORD={{ POSTGRESQL_PASSWORD }}"
+
+  - name: Set POSTGRESQL_PORT
+    lineinfile:
+      dest: ~/app/result/.env
+      regexp: "^POSTGRESQL_PORT="
+      line: "POSTGRESQL_PORT={{ POSTGRESQL_PORT }}"
+
+  - name: Set PORT
+    lineinfile:
+      dest: ~/app/result/.env
+      regexp: "^PORT="
+      line: "PORT={{ RESULT_PORT }}"
+
+  - name: Copy service for systemd
+    copy:
+      src: ../files/result.service
+      dest: /etc/systemd/system/result.service
+
+  - name: npm install
+    npm:
+      path: ~/app/result/
+
+  - name: npm install dotenv
+    command: npm install ~/app/result/ dotenv --save
+
+  - name: Start Result service
+    systemd:
+      name: result.service
+      state: started
+      masked: no
+      enabled: yes

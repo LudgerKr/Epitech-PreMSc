@@ -1,0 +1,14 @@
+{{ partial "header.html" . }}
+{{ partial "sidebar_calendar.html" . }}
+
+<div align="center">
+    <h3 class="header">Liste des événements archivés</h3>
+    {{ $ps := .Paginate (where .Site.RegularPages "Section" "events") }}
+    {{ range $ps.Pages.ByParam "When" }}
+    {{ if lt (time .Params.When) (now)}}
+    {{ partial "event.html" . }}
+    {{ end }}
+    {{ end }}
+    {{ partial "pagination.html" . }}
+</div>
+{{ partial "footer.html" . }}

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Articles{% endblock %}
+
+{% block body %}
+
+    <section class="articles">
+        {%  for article in articles %}
+            <article>
+            <h2>{{ article.title }}</h2>
+            <div class="metadata">Ecrit le {{ article.createdAt | date('d/m/Y') }} à
+                {{ article.createdAt | date('H:i') }} dans la catégorie {{ article.category.name }} type {{ article.articleType.name }} pour le {{ article.articlePurpose.name }}</div>
+                <div class="metadata">Weight : {{ article.weight }}</div>
+                <div class="metadata">Stock : {{ article.stock }}</div>
+                <div class="metadata">Price : {{ article.price }}</div>
+            <div class="content">
+                <img src="{{ article.imageMain }}" alt="">
+                <p>{{ article.content | raw }}</p>
+                <a href="{{ path('ecommerce_show', {'id': article.id}) }}" class="btn btn-primary">Lire la suite</a>
+                {% if app.user %}
+                <a href="{{ path('ecommerce_edit', {'id': article.id}) }}" class="btn btn-primary">Modifier l'article</a>
+                {% endif %}
+            </div>
+            </article>
+        {% endfor %}
+    </section>
+
+{% endblock %}

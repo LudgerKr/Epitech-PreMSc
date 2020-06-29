@@ -1,0 +1,30 @@
+{{ partial "header.html" . }}
+{{ partial "sidebar.html" . }}
+
+<div align="center">
+
+<h2 class="header"> La liste des associations </h2>
+<br><br>
+    {{ $ps := .Paginate (where .Site.RegularPages "Section" "associations") }}
+    {{ range $ps.Pages }}
+    {{ if eq .Type "associations" }}
+    <table style="height: 60px; border-color: black; width: 600px;" border="10" cellspacing="10" cellpadding="4">
+        <tbody>
+        <tr>
+            <td align="center"><h3> {{ .Title }}</a></h3></td>
+        </tr>
+        <tr>
+            <td align="center"><img src="{{ .Params.Photo }}"  width="450" height="450"></td>
+        </tr>
+        <tr>
+            <td align="center"><h4>{{.Content | safeHTML | truncate 200 }}<a href="{{ .Permalink }}"> Voir la suite</a></h4></td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+{{ end }}
+{{ end }}
+    {{ partial "pagination.html" . }}
+</div>
+{{ partial "footer.html" . }}

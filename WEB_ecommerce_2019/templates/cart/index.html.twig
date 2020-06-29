@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block body %}
+    <section class="carts">
+        {% if cart is empty or cart.cartArticle|length == 0 %}
+            <h1>Votre panier est vide !</h1>
+        {% else %}
+            {% set priceTotal = 0 %}
+            <h1>Votre panier contient {{ cart.cartArticle|length }} Article(s)</h1>
+            {% for cartArticle in cart.cartArticle %}
+                {% set priceTotal = (cartArticle.quantity * cartArticle.article.price) + priceTotal %}
+                <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+                <div class="col">
+                    <a href="{{ path('article_show', {'id': cartArticle.article.id }) }}"><h2>{{ cartArticle.article.title }}</h2></a>
+                    <div class="row">
+                        <img src="{{ cartArticle.article.imageMain }}" alt="{{ cartArticle.article.title }} image">
+                        <div class="col">
+                            <p>prix article : {{ cartArticle.article.price }} €</p>
+                            <div class="row">
+                                <a href="{{ path('cart_cartArticle_quantity_change', {'id': cartArticle.id, 'quantity': cartArticle.quantity - 1}) }}" class="col-2"><button>-</button></a>
+                                <p class="col-6 text-center">quantité : {{ cartArticle.quantity }}</p>
+                                <a href="{{ path('cart_cartArticle_quantity_change', {'id': cartArticle.id, 'quantity': cartArticle.quantity + 1}) }}" class="col-2"><button>+</button></a>
+                                <a href="{{ path('cart_remove_article', {'id': cartArticle.id, 'articleId': cartArticle.article.id }) }}" class="col-1 badge badge-danger">Delete</a>
+                            </div>
+                            <p>Stock {{ cartArticle.article.stock }}</p>
+                            <p>prix total : {{ cartArticle.quantity * cartArticle.article.price }} €</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <p>Prix total : {{ priceTotal }}</p>
+            <a href="{{ path('cart_payment') }}"><button>Passer la commande </button></a>
+        {% endif %}
+    </section>
+    <a href="{{ path('cart_orders') }}"><button>Historique de paiement </button></a>
+{% endblock %}

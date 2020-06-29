@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Carte</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrd48gkpuPzes-6mMPWN5OtZcAcBWPP_s
+&callback=initMap"
+            type="text/javascript"></script>
+    <input type="hidden" value={{ .Title }} id="Titre" />
+    <input type="hidden" value={{ .Params.City }} id="Ville" />
+    <input type="hidden" value={{ .Params.Latitude }} id="Latitude" />
+    <input type="hidden" value={{ .Params.Longitude }} id="Longitude" />
+    <script>
+        let titre = document.getElementById("Titre").value;
+        let ville = document.getElementById("Ville").value;
+        let latitude = document.getElementById("Latitude").value;
+        let longitude = document.getElementById("Longitude").value;
+        var markup = [
+            [ville, titre, latitude, longitude, '/img/marker.png'],
+        ];
+
+        function initialize(){
+            var mapOptions={
+                zoom: 5, // 0 à 21
+                center: new google.maps.LatLng(47,2), // centre de la carte
+                mapTypeId: google.maps.MapTypeId.ROADMAP, // ROADMAP, SATELLITE, HYBRID, TERRAIN
+            }
+            var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+            setMarkers(map,markup);
+        }
+
+        function setMarkers(map,locations){
+            for(var i=0; i<locations.length; i++){
+                var markup = locations[i];
+                var myLatLng = new google.maps.LatLng(markup[2],markup[3]);
+                var infoWindow = new google.maps.InfoWindow();
+                var marker = new google.maps.Marker ({
+                    position: myLatLng,
+                    map: map,
+                    icon: markup[4],
+                    animation: google.maps.Animation.DROP
+                });
+                (function(i){
+                    google.maps.event.addListener(marker, "click", function(){
+                        var markup = locations[i];
+                        infoWindow.close();
+                        infoWindow.setContent("<div>"+markup[0]+"<br />"+markup[1]+"</div>");
+                        infoWindow.open(map, this);
+                    });
+                })(i);
+            }
+        }
+    </script>
+</head>
+
+<body onload="initialize()">
+<div id="map_canvas"></div>
+</body>
+</html>

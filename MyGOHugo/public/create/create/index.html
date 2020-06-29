@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+    <link rel="icon" type="image/x-icon" href="img/mairie/favicon.ico" />
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/hugo.css">
+
+</head>
+<body style="position: relative;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/index.html">Acceuil</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="/events" role="button" aria-haspopup="true" aria-expanded="false">Evénements</a>
+                <div class="submenu">
+                    <a class="btn btn-primary" href="/archives">Passés</a>
+                    <a class="btn btn-primary" href="/upcomings">Prochainement</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/archives">Archives</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/associations">Associations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/municipalcouncil">Conseil Municipal</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/calendar/calendar">Calendrier</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/contact/formulaire">Contact</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+    <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+    <link rel="stylesheet" href="/css/sidebar.css">
+
+</head>
+<body style="position: fixed;">
+<div class="sidebar-container">
+    <div class="sidebar-logo">
+        <a href="/index.html" style="color: white">Mairie de Paris</a>
+    </div>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+<script type="text/javascript">
+    var idx, searchInput, searchResults = null
+    var documents = []
+
+    function renderSearchResults(results)
+    {
+        if (results.length > 0)
+        {
+            if (results.length > 9)
+            {
+                results = results.slice(0,10)
+            }
+            searchResults.innerHTML = ''
+            results.forEach(result =>
+            {
+                    
+                    var article = document.createElement('article')
+                    article.innerHTML = `
+                                            <div class="evenementsSearch">
+                                                <a href="${result.ref}"> <p class="title">${documents[result.ref].title}</p> </a>                                                <br>
+                                            </div>
+                                        `
+                searchResults.appendChild(article)
+            })
+        }
+        else
+            {
+             searchResults.innerHTML = '<div class="noResultSearch"><p>No results found</p></div>'
+            }
+    }
+    function registerSearchHandler()
+    {
+        // register on input event
+        searchInput.oninput = function(event)
+        {
+            
+            if (searchInput.value == '')
+            {
+                searchResults.innerHTML = ''
+            }
+            else
+                {
+                
+                var query = event.target.value
+                
+                var results = idx.search(query + '*')
+                
+                renderSearchResults(results)
+            }
+        }
+        
+        searchInput.focus()
+        searchInput.placeholder = ''
+    }
+    window.onload = function() {
+        searchInput = document.getElementById('search-input')
+        searchResults = document.getElementById('search-results')
+        myFunction();
+    }
+    function myFunction() {
+
+        let typeSearch = document.getElementById('typeSearch').value;
+
+        console.log(typeSearch);
+
+        try {
+            var data = [
+                fetch('/events/index.json').then(res => res.json()),
+                fetch('/associations/index.json').then(res => res.json()),
+                fetch('/municipalcouncil/index.json').then(res => res.json())
+            ];
+            switch (typeSearch) {
+                case "events": {
+                    data[0].then(
+                        res => {
+                            
+                            idx = lunr(function () {
+                                this.ref('url')
+                                this.field('title')
+                                this.field('content')
+                                res.forEach(function (doc) {
+                                    this.add(doc)
+                                    documents[doc.url] =
+                                        {
+                                            'title': doc.title,
+                                            'content': doc.content,
+                                        }
+                                }, this)
+                            })
+                            
+                            registerSearchHandler();
+                        })
+                }
+                    break;
+                case "associations": {
+                    data[1].then(
+                        res => {
+                            
+                            idx = lunr(function () {
+                                this.ref('url')
+                                this.field('title')
+                                this.field('content')
+                                res.forEach(function (doc) {
+                                    this.add(doc)
+                                    documents[doc.url] =
+                                        {
+                                            'title': doc.title,
+                                            'content': doc.content,
+                                        }
+                                }, this)
+                            })
+                            
+                            registerSearchHandler();
+                        });
+                }
+                    break;
+                case "municipalcouncil": {
+                    data[2].then(
+                        res => {
+                            
+                            idx = lunr(function () {
+                                this.ref('url')
+                                this.field('title')
+                                this.field('content')
+                                res.forEach(function (doc) {
+                                    this.add(doc)
+                                    documents[doc.url] =
+                                        {
+                                            'title': doc.title,
+                                            'content': doc.content,
+                                        }
+                                }, this)
+                            })
+                            
+                            registerSearchHandler();
+                        });
+                }
+                    break;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+</script>
+
+<input id="search-input" type="text" placeholder="Loading..." name="search">
+<label for="typeSearch">
+    <select onchange="myFunction()" id="typeSearch">
+        <option>Choisissez votre type de recherche</option>
+        <option value="events">Evénement</option>
+        <option value="associations">Associations</option>
+        <option value="municipalcouncil">Conseil</option>
+    </select>
+</label>
+
+<section id="search-results" class="search"></section>
+</body>
+</html>
+    <ul class="sidebar-navigation">
+        <h3 class="header"><a href="/associations/">Liste des associations</a></h3>
+        
+        <li>
+            <a href="http://example.org/associations/associations5/">Associations5</a>
+        </li>
+        
+        <li>
+            <a href="http://example.org/associations/associations6/">Associations6</a>
+        </li>
+        
+        <li>
+            <a href="http://example.org/associations/associations7/">Associations7</a>
+        </li>
+        
+        <li>
+            <a href="http://example.org/associations/associations8/">Associations8</a>
+        </li>
+        
+        <li>
+            <a href="http://example.org/associations/associations10/">Associations9</a>
+        </li>
+        
+    </ul>
+</div>
+
+    <title>Create</title>
+    <script type="text/javascript">
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; 
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd='0'+dd
+        }
+
+        if(mm<10) {
+            mm='0'+mm
+        }
+
+        today = yyyy+'-'+mm+'-'+dd;
+
+
+        function saveFormAsTextFile()
+        {
+            var textToSave =
+                '---\n'+
+                'title: ' + document.getElementById('title').value + '\n' +
+                'date: ' + today + '\n' +
+                'description: ' + document.getElementById('description').value + '\n' +
+                'draft: ' + document.getElementById('draft').value.replace(/,\s/g, "\n- ") + '\n' +
+                'address: ' + '\n- ' + document.getElementById('adresse').value + '\n' +
+                'postalCode: ' + '\n- ' + document.getElementById('codePostal').value + '\n' +
+                'city: ' + '\n- ' + document.getElementById('ville').value + '\n' +
+                'when: ' + '\n- ' + document.getElementById('when').value + '\n' +
+                'photo: ' + '\n- ' + document.getElementById('photo').value + '\n' +
+                'important: ' + '\n- ' + document.getElementById('important').value.replace(/,\s/g, "\n- ") + '\n' +
+                'association: ' + '\n- ' + document.getElementById('association').value + '\n' +
+                'latitude: ' + '\n- ' + document.getElementById('latitude').value + '\n' +
+                'longitude: ' + '\n- ' + document.getElementById('longitude').value + '\n' +
+                '---\n' + '\n' +
+                document.getElementById('contenu').value
+
+            var textToSaveAsBlob = new Blob([textToSave], {type:"text/plain"});
+            var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+            var fileNameToSaveAs = document.getElementById("filename").value;
+
+            var downloadLink = document.createElement("a");
+            downloadLink.download = fileNameToSaveAs;
+            downloadLink.innerHTML = "Download File";
+            downloadLink.href = textToSaveAsURL;
+            downloadLink.onclick = destroyClickedElement;
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+
+            downloadLink.click();
+        }
+
+        function destroyClickedElement(event)
+        {
+            document.body.removeChild(event.target);
+        }
+    </script>
+</head>
+
+<body>
+<div align="center">
+
+    <h1>Créer un événement</h1>
+    <table style="height: 60px; border-color: black; width: 400px;" border="10" cellspacing="10" cellpadding="4">
+        <tbody>
+
+            <tr><td align="center">
+                <label for="title">
+                    <i>Title</i>
+                    <input id="title" size="40" placeholder="Title">
+                </label>
+            </td></tr>
+
+    <br>
+
+    <tr>
+    <input type="hidden" id="date" size="40">
+    </tr>
+
+    <br>
+        <tr><td align="center">
+            <label for="description">
+                <i>Description</i>
+                <textarea id="description" cols="40" rows="3" placeholder="tag, tag, tag"></textarea>
+            </label>
+        </td></tr>
+
+    <br>
+
+            <tr><td align="center">
+                <label for="draft">
+                    <i>Draft</i>
+                    <select name="draft" id="draft" size="1">
+                        <option value="true">Vrai</option>
+                        <option value="false">Faux</option>
+                    </select>
+                </label>
+            </td></tr>
+
+    <br>
+
+            <tr><td align="center">
+                <label for="adresse">
+                    <i>Adresse</i>
+                    <input id="adresse" size="40" placeholder="Adresse">
+                </label>
+            </td></tr>
+
+    <br>
+            <tr><td align="center">
+                <label for="codePostal">
+                    <i>Code postal</i>
+                    <input id="codePostal" size="40" placeholder="75000">
+                </label>
+            </td></tr>
+
+    <br>
+            <tr><td align="center">
+                <label for="ville">
+                    <i>Ville</i>
+                    <input id="ville" size="40" placeholder="Paris">
+                </label>
+            </td></tr>
+
+    <br>
+            <tr><td align="center">
+                <label for="when">
+                    <i>Date de l'événement</i>
+                    <input id="when" size="40" placeholder="2019-08-29T12:12:00+02:00">
+                </label>
+            </td></tr>
+    <br>
+
+            <tr><td align="center">
+                <label for="photo">
+                    <i>Photo</i>
+                    <input id="photo" size="40" placeholder="/img/events/">
+                </label>
+            </td></tr>
+
+    <br>
+
+            <tr><td align="center">
+                <label for="important">
+                    <i>Important</i>
+                    <select name="important" id="important" size="1">
+                        <option value="true">Vrai</option>
+                        <option value="false">Faux</option>
+                    </select>
+                </label>
+            </td></tr>
+
+    <br>
+            <tr><td align="center">
+                <label for="association">
+                    <i>Association</i>
+                    <input id="association" size="40" placeholder="Association">
+                </label>
+            </td></tr>
+
+    <br>
+
+            <tr><td align="center">
+                <label for="latitude">
+                    <i>Latitude</i>
+                    <input id="latitude" size="40" placeholder="43,444444">
+                </label>
+            </td></tr>
+
+    <br>
+
+            <tr><td align="center">
+                <label for="longitude">
+                    <i>Longitude</i>
+                    <input id="longitude" size="40" placeholder="1,444444">
+                </label>
+            </td></tr>
+
+    <br>
+
+            <tr><td align="center">
+                <label for="contenu">
+                    <i>Content</i>
+                    <textarea id="contenu" cols="40" rows="10" placeholder="Le contenu de votre événement"></textarea>
+                </label>
+            </td></tr>
+
+    <br>
+
+            <tr><td align="center">
+                <label for="filename">
+                    <i>Filename</i>
+                    <input id="filename" value="" size="40" placeholder="title.md">
+                </label>
+            </td></tr>
+
+            <tr><td align="center">
+                <button onclick="saveFormAsTextFile()">
+                    Save to File
+                </button>
+            </td></tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<div align="center">
+    <td><a href="#top" class="btn btn-primary">Retour en haut de la page</a></td>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div id="footer"; style="bottom: 0; left: 0; right: 0">
+    <table style="height: 10px;" class="table table-hover">
+        <tr class="table-info">
+            <th scope="row">© 2019 Copyright</th>
+            <td><h2><a class="btn btn-primary" href="/contact/formulaire">Contactez-nous</a></h2></td>
+        </tr>
+    </table>
+</div>
+</body>
+</div>
+</html>

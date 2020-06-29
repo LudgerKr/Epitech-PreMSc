@@ -1,0 +1,31 @@
+[
+ 
+    
+      {
+        "title": "Events",
+        "url": "http://example.org/events/",
+        "content": ""
+      }
+    
+    , 
+      {
+        "title": "La fête au village",
+        "url": "http://example.org/events/lafeteauvillage/",
+        "content": "Ceci est mon troisième article !\n"
+      }
+    
+    , 
+      {
+        "title": "Tout à 1€",
+        "url": "http://example.org/events/touta1euros/",
+        "content": "Ceci est mon deuxième article !\n"
+      }
+    
+    , 
+      {
+        "title": "Festival du sucre",
+        "url": "http://example.org/events/festivaldusucre/",
+        "content": "Ceci est mon premier article !\n"
+      }
+    
+]

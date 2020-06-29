@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        let stripe = Stripe('{{ stripe_public_key }}');
+
+        stripe.redirectToCheckout({
+            sessionId: '{{ sessionId }}'
+        }).then(function (result) {
+
+        })
+    </script>
+{% endblock %}

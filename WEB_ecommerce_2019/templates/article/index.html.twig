@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Articles{% endblock %}
+
+{% block body %}
+    <section class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mt-5">
+        {% for article in articles %}
+            <div class="col mb-4">
+                <div class="card h-100">
+                        <p class="text-{{ article.stock > 10 ? "success" : "warning" }}">{{ article.stock > 10 ? "En stock" : "Limité" }}</p>
+
+                    <a class="card-img-top text-center" href="{{ path('article_show', {'id': article.id}) }}"><img style="width: 100%;height: 15rem;object-fit: cover;"
+                                src="{{ article.imageMain }}" alt="{{ article.title }} image main"></a>
+                    <div class="card-body">
+                        <h3>
+                            <a href="{{ path('article_show', {'id': article.id}) }}">{{ article.title }}</a>
+                            {% if app.request.attributes.get("_route") != "brand_show" %}
+                                -
+                                <a href="{{ path('brand_show', {'id': article.brand.id}) }}"> {{ article.brand.name }}</a>
+                            {% endif %}
+                        </h3>
+                        <p class="card-text">{{ article.content | raw | slice(0, 150) }} ... </p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <h2 class="card-title">{{ article.price }} €</h2>
+
+                        {% if app.user %}
+                            <a href="{{ path('cart_add_article', {'id': article.id}) }}" class="btn btn-primary m-1">Ajouter
+                                au panier</a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('article_edit', {'id': article.id}) }}" class="btn btn-primary">Modifier l'article</a>
+                            {% endif %}
+                        {% endif %}
+                        <p class="text-muted mt-2">catégorie <strong>{{ article.category.name }}</strong> type
+                            <strong>{{ article.articleType.name }}</strong> pour
+                            <strong>{{ article.articlePurpose.name }}</strong></p>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+{% endblock %}
+
+{% block paginator %}
+    {{ knp_pagination_render(articles) }}
+{% endblock %}

@@ -1,0 +1,10 @@
+Ce qui manque :
+
+Panier (Payement, Stipe)
+API sécurisé (JWT)
+User panier sans connexion (uniquement via email)
+Récupération de mot de passe
+Pagination
+Page profile
+Rajouter updated At dans le panier
+Page des marques

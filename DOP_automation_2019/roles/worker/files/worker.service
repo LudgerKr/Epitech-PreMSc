@@ -1,0 +1,12 @@
+[Unit]
+Description=Service for worker
+
+[Service]
+EnvironmentFile=/home/root/app/.env
+User=root
+WorkingDirectory=/home/root/app/worker
+ExecStart=java -jar target/worker-jar-with-dependencies.jar
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

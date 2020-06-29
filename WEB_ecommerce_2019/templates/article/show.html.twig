@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme commentForm 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <article>
+        <h2>
+            <a href="{{ path('brand_show', {'id': article.brand.id}) }}">
+                {{ article.brand.name }}
+            </a>
+            -
+            {{ article.title }}
+        </h2>
+        <div class="metadata">{{ article.category.name }} de type {{ article.articleType.name }}</div>
+        {% if article.weight %}<div class="metadata">Poids : {{ article.weight }}</div>{% endif %}
+        <div class="metadata">H : {{ article.height ?: "" }} L : {{ article.width ?: "-" }} l : {{ article.length ?: "-" }}</div>
+        <div class="metadata text-{{ article.stock > 10 ? "success" : "warning" }}">{{ article.stock > 10 ? "en stock" : "stock limité" }}</div>
+        <div class="metadata">prix : {{ article.price }} €</div>
+        <div>
+            <div class="row">
+                <img src="{{ article.imageMain }}" alt="{{ article.title }} image main" style="width:250px;height:250px;">
+                <div class="col-md-3">
+                    {% if article.image1 is not same as ("null") %}<img src="{{ article.image1 }}" alt="{{ article.title }} image 1" style="width:125px;height:125px;">{% endif %}
+                    {% if article.image2 is not same as("null") %}<img src="{{ article.image2 }}" alt="{{ article.title }} image 2" style="width:125px;height:125px;">{% endif %}
+                    {% if article.image3 is not same as("null") %}<img src="{{ article.image3 }}" alt="{{ article.title }} image 3" style="width:125px;height:125px;">{% endif %}
+                </div>
+            </div>
+            <p>{{ article.content | raw }}</p>
+        </div>
+    </article>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('article_edit', {'id': article.id}) }}" class="btn btn-primary">Modifier l'article</a>
+    {% endif %}
+    {%  if app.user %}
+        <a href="{{ path('cart_add_article', {'id': article.id}) }}" class="btn btn-primary">Ajouter au panier</a>
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a id="delete-btn" class="btn btn-danger">Delete Article</a>
+    {% endif %}
+
+    <section id="commentaires">
+        <h1>{{ comments | length }} commentaires : </h1>
+        {%  for comment in comments %}
+            <div class=comment">
+                <div class="row">
+                    <div class="col-3">
+                        {{ comment.author }} <small>{{ comment.createdAt | date('(d/m/Y à H:i)') }}</small>
+                    </div>
+                    <div class="col">
+                        {{ comment.content | raw }}
+                    </div>
+                    {% if app.user %}
+                        {% if app.user.username == comment.author or is_granted("ROLE_ADMIN") %}
+                            <div class="col-2">
+                                <a href="{{ path('article_comment_delete', {'id': comment.id, 'articleId': article.id}) }}"><button class="btn btn-danger">Delete</button></a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        {%  endfor %}
+
+        {%  if app.user %}
+            {{ form_start(commentForm) }}
+            {{ form_row(commentForm.content, {'attr': {placeholder: "Votre commentaire" }}) }}
+            {{ form_row(commentForm.mark, {'attr': {placeholder: "Votre notte" }}) }}
+
+            <button type="submit" class="btn btn-success">Commenter</button>
+            {{ form_end(commentForm) }}
+
+        {% else %}
+            <h2>Vous ne pouvez pas commenter si vous n'êtes pas connecté</h2>
+            <a href="{{ path('security_registration') }}" class="btn btn-primary">Inscription</a>
+            <a href="{{ path('security_login') }}" class="btn btn-primary">Connexion</a>
+            <p></p>
+        {% endif %}
+    </section>
+{% endblock %}
+
+{% block title %}
+    {{ article.title }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#delete-btn').click(function (e) {
+            e.preventDefault();
+            if (window.confirm("Voulez vous vraiment delete cette article ?")) {
+                window.location.href = "{{  path('article_delete', {id: article.id})|escape('js')  }}";
+            }
+        });
+    </script>
+{% endblock %}
+

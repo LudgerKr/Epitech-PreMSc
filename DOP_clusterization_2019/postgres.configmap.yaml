@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: postgres-conf
+ namespace: default
+data:
+  traefik.toml: |-
+   defaultEntryPoints = ["http","https"]
+   [web]
+   address = ":8080"
+  POSTGRES_HOST: postgres_host
+  POSTGRES_PORT: postgres_port
+  POSTGRES_DB: postgresdb
+  POSTGRES_USER: postgres-user
+  POSTGRES_PASSWORD: postgres-password

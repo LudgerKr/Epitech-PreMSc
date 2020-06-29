@@ -1,0 +1,7 @@
+---
+- import_playbook: "roles/base/tasks/main.yml"
+- import_playbook: "roles/poll/tasks/main.yml"
+- import_playbook: "roles/postgresql/tasks/main.yml"
+- import_playbook: "roles/redis/tasks/main.yml"
+- import_playbook: "roles/result/tasks/main.yml"
+- import_playbook: "roles/worker/tasks/main.yml"

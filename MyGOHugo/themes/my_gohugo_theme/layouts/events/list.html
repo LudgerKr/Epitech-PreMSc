@@ -1,0 +1,14 @@
+{{ partial "header.html" . }}
+{{ partial "sidebar_calendar.html" . }}
+
+<div align="center">
+    <h2 class="header">La liste des événements</h2>
+    {{ $ps := .Paginate .Pages }}
+    {{ range $ps.Pages }}
+    {{ if eq .Type "events" }}
+    {{ partial "event.html" . }}
+    {{ end }}
+    {{ end }}
+    {{ partial "pagination.html" . }}
+</div>
+{{ partial "footer.html" . }}

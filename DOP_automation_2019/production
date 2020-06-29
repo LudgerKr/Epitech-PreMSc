@@ -1,0 +1,19 @@
+server01_redis:
+  hosts:
+    root@192.168.56.131
+
+server02_postgres:
+  hosts:
+    root@62.171.168.198
+
+server03_poll:
+  hosts:
+    root@192.168.56.128
+
+server04_result:
+  hosts:
+    root@192.168.56.129
+
+server05_worker:
+  hosts:
+    root@192.168.56.130

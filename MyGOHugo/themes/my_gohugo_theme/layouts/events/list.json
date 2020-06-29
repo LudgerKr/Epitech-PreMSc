@@ -1,0 +1,10 @@
+[
+ {{ range $index, $value := where .Site.Pages "Type" "events" }}
+    {{ if $index }}, {{ end }}
+      {
+        "title": "{{ .Title }}",
+        "url": "{{ .Permalink }}",
+        "content": {{ .Content | plainify | jsonify }}
+      }
+    {{ end }}
+]

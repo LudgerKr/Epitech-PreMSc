@@ -1,0 +1,31 @@
+{{ partial "header.html" . }}
+{{ partial "sidebar_municipalcouncil.html" . }}
+
+<div align="center">
+    {{ partial "presentation.html" . }}
+    <br><br>
+    <h2 class="header"> La liste des membres du conseil municipal </h2>
+    <br>
+    <br>
+    {{ range .Data.Pages }}
+
+    {{ if eq .Type "municipalcouncil" }}
+    <table style="height: 60px; border-color: black; width: 400px;" border="10" cellspacing="10" cellpadding="4" align="center">
+        <tbody>
+        <tr>
+            <td align="center"><h3 class="text-uppercase"> {{ .Params.LastName }}</h3> <h3>{{ .Params.FirstNames }}</h3></td>
+        </tr>
+        <tr>
+            <td align="center"><img src="{{ .Params.Photo }}" width="250" height="250"></td>
+        </tr>
+        <tr>
+            <td align="center"><h3>{{.Content | safeHTML | truncate 200 }}<a href="{{ .Permalink }}"> Voir la suite</a></h3></td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    {{ end }}
+    {{ end }}
+</div>
+{{ partial "footer.html" . }}

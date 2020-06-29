@@ -1,0 +1,31 @@
+<!DOCTYPE html >
+<html lang ="en">
+<head >
+    <meta charset ="UTF -8">
+    <meta name =" viewport " content =" width =device -width , initial - scale =1.0 ">
+    <meta http-equiv ="X-UA-Compatible " content ="ie= edge ">
+    <title> {{ .Title }} </title>
+    {{ partial "header.html" . }}
+    {{ partial "sidebar_municipalcouncil.html" . }}
+</head>
+<body>
+<div align="center">
+    <table style="height: 60px; border-color: black; width: 400px;" border="10" cellspacing="10" cellpadding="4">
+        <tbody>
+        <tr>
+            <td align="center"><img src="{{ .Params.Photo }}"></td>
+        </tr>
+        <tr>
+            <td align="center"><h3>{{ .Params.FirstNames }}</h3></td>
+        </tr>
+        <tr>
+            <td align="center"><h3>{{ .Params.LastName }}</h3></td>
+        </tr>
+        <tr>
+            <td align="center"><h3>{{ .Params.Role }}</h3></td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br>
+</div>
+{{ partial "footer.html" . }}

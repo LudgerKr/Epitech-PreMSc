@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://example.org/calendar/calendar/</loc>
+    <lastmod>2019-09-25T11:12:33+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/calendar/</loc>
+    <lastmod>2019-09-25T11:12:33+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/</loc>
+    <lastmod>2019-09-25T11:12:33+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/archives/</loc>
+    <lastmod>2019-09-25T10:58:47+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/archives/archives/</loc>
+    <lastmod>2019-09-25T10:58:47+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/upcomings/</loc>
+    <lastmod>2019-09-24T10:47:10+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/upcomings/upcomings/</loc>
+    <lastmod>2019-09-24T10:47:10+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/create/create/</loc>
+    <lastmod>2019-09-24T09:16:54+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/create/</loc>
+    <lastmod>2019-09-24T09:16:54+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/associations/</loc>
+    <lastmod>2019-09-17T11:20:38+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/associations/associations5/</loc>
+    <lastmod>2019-09-17T11:20:38+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/associations/associations6/</loc>
+    <lastmod>2019-09-17T11:20:38+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/associations/associations7/</loc>
+    <lastmod>2019-09-17T11:20:38+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/associations/associations8/</loc>
+    <lastmod>2019-09-17T11:20:38+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/associations/associations10/</loc>
+    <lastmod>2019-09-17T11:20:38+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/associations/associations9/</loc>
+    <lastmod>2019-09-17T11:20:38+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/associations/associations4/</loc>
+    <lastmod>2019-09-17T11:20:37+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/associations/associations3/</loc>
+    <lastmod>2019-09-17T11:20:35+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/associations/associations2/</loc>
+    <lastmod>2019-09-17T11:20:33+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/associations/associations1/</loc>
+    <lastmod>2019-09-17T11:20:31+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/contact/</loc>
+    <lastmod>2019-09-17T11:02:27+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/contact/formulaire/</loc>
+    <lastmod>2019-09-17T11:02:27+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/municipalcouncil/</loc>
+    <lastmod>2019-09-17T10:46:40+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/municipalcouncil/pnj5/</loc>
+    <lastmod>2019-09-17T10:46:40+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/municipalcouncil/pnj4/</loc>
+    <lastmod>2019-09-17T10:46:38+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/municipalcouncil/pnj3/</loc>
+    <lastmod>2019-09-17T10:46:36+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/municipalcouncil/pnj2/</loc>
+    <lastmod>2019-09-17T10:46:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/municipalcouncil/pnj1/</loc>
+    <lastmod>2019-09-17T10:46:32+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/events/</loc>
+    <lastmod>2019-09-16T12:27:04+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/events/lafeteauvillage/</loc>
+    <lastmod>2019-09-16T12:27:04+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/events/touta1euros/</loc>
+    <lastmod>2019-09-16T12:27:01+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/events/festivaldusucre/</loc>
+    <lastmod>2019-09-16T12:08:32+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.org/tags/</loc>
+  </url>
+  
+</urlset>

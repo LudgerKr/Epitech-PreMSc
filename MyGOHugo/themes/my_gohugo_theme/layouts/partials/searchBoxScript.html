@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+<script type="text/javascript">
+    var idx, searchInput, searchResults = null
+    var documents = []
+
+    function renderSearchResults(results)
+    {
+        if (results.length > 0)
+        {
+            if (results.length > 9)
+            {
+                results = results.slice(0,10)
+            }
+            searchResults.innerHTML = ''
+            results.forEach(result =>
+            {
+                    // create result item
+                    var article = document.createElement('article')
+                    article.innerHTML = `
+                                            <div class="evenementsSearch">
+                                                <a href="${result.ref}"> <p class="title">${documents[result.ref].title}</p> </a>                                                <br>
+                                            </div>
+                                        `
+                searchResults.appendChild(article)
+            })
+        }
+        else
+            {
+             searchResults.innerHTML = '<div class="noResultSearch"><p>No results found</p></div>'
+            }
+    }
+    function registerSearchHandler()
+    {
+        // register on input event
+        searchInput.oninput = function(event)
+        {
+            // remove search results if the user empties the search input field
+            if (searchInput.value == '')
+            {
+                searchResults.innerHTML = ''
+            }
+            else
+                {
+                // get input value
+                var query = event.target.value
+                // run fuzzy search
+                var results = idx.search(query + '*')
+                // render results
+                renderSearchResults(results)
+            }
+        }
+        // set focus on search input and remove loading placeholder
+        searchInput.focus()
+        searchInput.placeholder = ''
+    }
+    window.onload = function() {
+        searchInput = document.getElementById('search-input')
+        searchResults = document.getElementById('search-results')
+        myFunction();
+    }
+    function myFunction() {
+
+        let typeSearch = document.getElementById('typeSearch').value;
+
+        console.log(typeSearch);
+
+        try {
+            var data = [
+                fetch('/events/index.json').then(res => res.json()),// parse each response as json
+                fetch('/associations/index.json').then(res => res.json()),
+                fetch('/municipalcouncil/index.json').then(res => res.json())
+            ];
+            switch (typeSearch) {
+                case "events": {
+                    data[0].then(
+                        res => {
+                            // index document
+                            idx = lunr(function () {
+                                this.ref('url')
+                                this.field('title')
+                                this.field('content')
+                                res.forEach(function (doc) {
+                                    this.add(doc)
+                                    documents[doc.url] =
+                                        {
+                                            'title': doc.title,
+                                            'content': doc.content,
+                                        }
+                                }, this)
+                            })
+                            // data is loaded, next register handler
+                            registerSearchHandler();
+                        })
+                }
+                    break;
+                case "associations": {
+                    data[1].then(
+                        res => {
+                            // index document
+                            idx = lunr(function () {
+                                this.ref('url')
+                                this.field('title')
+                                this.field('content')
+                                res.forEach(function (doc) {
+                                    this.add(doc)
+                                    documents[doc.url] =
+                                        {
+                                            'title': doc.title,
+                                            'content': doc.content,
+                                        }
+                                }, this)
+                            })
+                            // data is loaded, next register handler
+                            registerSearchHandler();
+                        });
+                }
+                    break;
+                case "municipalcouncil": {
+                    data[2].then(
+                        res => {
+                            // index document
+                            idx = lunr(function () {
+                                this.ref('url')
+                                this.field('title')
+                                this.field('content')
+                                res.forEach(function (doc) {
+                                    this.add(doc)
+                                    documents[doc.url] =
+                                        {
+                                            'title': doc.title,
+                                            'content': doc.content,
+                                        }
+                                }, this)
+                            })
+                            // data is loaded, next register handler
+                            registerSearchHandler();
+                        });
+                }
+                    break;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+</script>
+
+<input id="search-input" type="text" placeholder="Loading..." name="search">
+<label for="typeSearch">
+    <select onchange="myFunction()" id="typeSearch">
+        <option>Choisissez votre type de recherche</option>
+        <option value="events">Evénement</option>
+        <option value="associations">Associations</option>
+        <option value="municipalcouncil">Conseil</option>
+    </select>
+</label>
+
+<section id="search-results" class="search"></section>
+</body>
+</html>

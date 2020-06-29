@@ -1,0 +1,229 @@
+<head>
+    <title> Festival du sucre </title>
+    <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Festival du sucre</title>
+    <link rel="icon" type="image/x-icon" href="img/mairie/favicon.ico" />
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/hugo.css">
+
+</head>
+<body style="position: relative;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/index.html">Acceuil</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="/events" role="button" aria-haspopup="true" aria-expanded="false">Evénements</a>
+                <div class="submenu">
+                    <a class="btn btn-primary" href="/archives">Passés</a>
+                    <a class="btn btn-primary" href="/upcomings">Prochainement</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/archives">Archives</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/associations">Associations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/municipalcouncil">Conseil Municipal</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/calendar/calendar">Calendrier</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/contact/formulaire">Contact</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+    <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Festival du sucre</title>
+    <link rel="stylesheet" href="/css/sidebar.css">
+
+</head>
+<body style="position: relative;">
+<div class="sidebar-container">
+    <div class="sidebar-logo">
+        <a href="/events" style="color: white">Les événements du mois de September</a>
+    </div>
+    <div align="center">
+        <ul class="sidebar-navigation">
+            
+            
+            
+            
+            <hr size="4" color="blue">
+            <h4>Sep 30, 2019 17:12</h4>
+            <li><a href="http://example.org/events/lafeteauvillage/">La fête au village</a></li>
+            </li>
+            
+            
+            
+            
+            
+            <hr size="4" color="blue">
+            <h4>Sep 27, 2019 17:12</h4>
+            <li><a href="http://example.org/events/touta1euros/">Tout à 1€</a></li>
+            </li>
+            
+            
+            
+            
+            
+            <hr size="4" color="blue">
+            <h4>Sep 29, 2019 12:12</h4>
+            <li><a href="http://example.org/events/festivaldusucre/">Festival du sucre</a></li>
+            </li>
+            
+            
+        </ul>
+    </div>
+</div>
+<br>
+
+</head>
+<div align="center">
+    
+    <table style="height: 200px; border-color: black; width: 400px;" border="10" cellspacing="10" cellpadding="4">
+        <tbody>
+        <tr>
+            <!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Carte</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrd48gkpuPzes-6mMPWN5OtZcAcBWPP_s
+&callback=initMap"
+            type="text/javascript"></script>
+    <input type="hidden" value=Festival&#32;du&#32;sucre id="Titre" />
+    <input type="hidden" value=Emerainville id="Ville" />
+    <input type="hidden" value=47.593889 id="Latitude" />
+    <input type="hidden" value=1.328056 id="Longitude" />
+    <script>
+        let titre = document.getElementById("Titre").value;
+        let ville = document.getElementById("Ville").value;
+        let latitude = document.getElementById("Latitude").value;
+        let longitude = document.getElementById("Longitude").value;
+        var markup = [
+            [ville, titre, latitude, longitude, '/img/marker.png'],
+        ];
+
+        function initialize(){
+            var mapOptions={
+                zoom: 5, 
+                center: new google.maps.LatLng(47,2), 
+                mapTypeId: google.maps.MapTypeId.ROADMAP, 
+            }
+            var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+            setMarkers(map,markup);
+        }
+
+        function setMarkers(map,locations){
+            for(var i=0; i<locations.length; i++){
+                var markup = locations[i];
+                var myLatLng = new google.maps.LatLng(markup[2],markup[3]);
+                var infoWindow = new google.maps.InfoWindow();
+                var marker = new google.maps.Marker ({
+                    position: myLatLng,
+                    map: map,
+                    icon: markup[4],
+                    animation: google.maps.Animation.DROP
+                });
+                (function(i){
+                    google.maps.event.addListener(marker, "click", function(){
+                        var markup = locations[i];
+                        infoWindow.close();
+                        infoWindow.setContent("<div>"+markup[0]+"<br />"+markup[1]+"</div>");
+                        infoWindow.open(map, this);
+                    });
+                })(i);
+            }
+        }
+    </script>
+</head>
+
+<body onload="initialize()">
+<div id="map_canvas"></div>
+</body>
+</html>
+        </tr>
+        <tr>
+            <h3><td>Titre : Festival du sucre</td></h3>
+        </tr>
+        <tr>
+            <h3><td>Date : September 16, 2019 12:08</td></h3>
+        </tr>
+        <tr>
+            <h3><td>Description : </td></h3>
+        </tr>
+        <tr>
+            <h3><td>Adresse : 13 rue silencieuse</td></h3>
+        </tr>
+        <tr>
+            <h3><td>Code Postal : 77184</td></h3>
+        </tr>
+        <tr>
+            <h3><td>Ville : Emerainville</td></h3>
+        </tr>
+        <tr>
+            <h3><td> September 29, 2019 12:12</td></h3>
+        </tr>
+        <tr>
+            <h3><td>Association:<a href="/associations/associations1"> Associations1</a> </td></h3>
+        </tr>
+        <tr>
+            <h3><td>Latitude: 47.593889</td></h3>
+        </tr>
+        <tr>
+            <h3><td>Longitude: 1.328056</td></h3>
+        </tr>
+        <tr>
+            <h3><td><p>Ceci est mon premier article !</p>
+</td></h3>
+        </tr>
+        </tbody>
+    </table>
+    </body>
+
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<div align="center">
+    <td><a href="#top" class="btn btn-primary">Retour en haut de la page</a></td>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div id="footer"; style="bottom: 0; left: 0; right: 0">
+    <table style="height: 10px;" class="table table-hover">
+        <tr class="table-info">
+            <th scope="row">© 2019 Copyright</th>
+            <td><h2><a class="btn btn-primary" href="/contact/formulaire">Contactez-nous</a></h2></td>
+        </tr>
+    </table>
+</div>
+</body>
+</div>
+</html>
+

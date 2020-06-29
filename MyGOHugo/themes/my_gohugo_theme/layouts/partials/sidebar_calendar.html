@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ .Title }}</title>
+    <link rel="stylesheet" href="/css/sidebar.css">
+
+</head>
+<body style="position: relative;">
+<div class="sidebar-container">
+    <div class="sidebar-logo">
+        <a href="/events" style="color: white">Les événements du mois de {{ dateFormat "January" now }}</a>
+    </div>
+    <div align="center">
+        <ul class="sidebar-navigation">
+            {{ range first 3 (where .Site.RegularPages "Section" "events") }}
+            {{ $n := dateFormat "January" now }}
+            {{ $t := dateFormat "January" .Params.When }}
+            {{ if eq $n $t }}
+            <hr size="4" color="blue">
+            <h4>{{ dateFormat "Jan 2, 2006 15:04" .Params.When }}</h4>
+            <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+            </li>
+            {{ end }}
+            {{ end }}
+        </ul>
+    </div>
+</div>
+<br>

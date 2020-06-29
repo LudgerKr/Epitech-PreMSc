@@ -1,0 +1,4 @@
+*.o
+abstractVM
+.v*
+v*

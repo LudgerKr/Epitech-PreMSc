@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ .Title }}</title>
+    <link rel="stylesheet" href="/css/sidebar.css">
+
+</head>
+<body style="position: relative;">
+<div class="sidebar-container">
+    <div class="sidebar-logo">
+        <a href="/municipalcouncil/" style="color: white">Les membres du conseil municipal</a>
+    </div>
+    <ul class="sidebar-navigation">
+        {{ range first 4 (where .Site.RegularPages "Section" "municipalcouncil") }}
+        <hr size="4" color="blue">
+        <li>
+            <a href="{{ .Permalink }}"><h4><strong class="text-uppercase"> {{ .Params.LastName }}</strong> {{ .Params.FirstNames }}</h4></a>
+        </li>
+        {{ end }}
+    </ul>
+</div>

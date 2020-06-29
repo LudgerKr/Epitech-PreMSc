@@ -1,0 +1,12 @@
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "Mairie de Paris"
+theme = "my_gohugo_theme"
+themesDir = "./themes"
+paginate = 4
+
+[outputs]
+    page = ["html", "json"]
+    section = ["html", "json"]
+    home = ["html", "json"]
+

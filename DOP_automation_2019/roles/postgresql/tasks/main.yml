@@ -1,0 +1,85 @@
+---
+- hosts: server02_postgres
+  become: yes
+  become_user: postgres
+
+  tasks:
+  - name: Enable and start the PostgreSQL service
+    systemd:
+      name: postgresql
+      enabled: yes
+      masked: no
+      state: started
+      
+  - name: Create the database
+    become: true
+    become_user: postgres
+    postgresql_db:
+      name: "{{ POSTGRESQL_DB }}"
+
+  - name: Copy sql schema files
+    copy:
+      src: ../files/schema.sql
+      dest: /tmp/schema.sql
+      follow: yes
+      
+  - name: Create user and set privileges
+    become: true
+    become_user: postgres
+    postgresql_user:
+      db: "{{POSTGRESQL_DB}}"
+      name: "{{POSTGRESQL_USER}}"
+      password: "{{POSTGRESQL_PASSWORD}}"
+      priv: "ALL/votes:ALL"
+      state: present
+      encrypted: yes
+
+
+  - name: Grant restricted privileges
+    become: true
+    become_user: postgres
+    postgresql_user:
+      name: "{{POSTGRESQL_USER}}"
+      role_attr_flags: CREATEDB,NOSUPERUSER
+      state: present
+      encrypted: yes
+
+
+- hosts: server02_postgres
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: Uploading required files
+    copy:
+      src: ../files/
+      dest: /etc/postgresql/10/main/
+
+  - name: Allowing all listen addresses
+    lineinfile:
+      dest: /etc/postgresql/10/main/postgresql.conf
+      regexp: "^listen_addresses"
+      line: "listen_addresses = '*'"
+
+- hosts: server02_postgres
+  become: yes
+  become_user: postgres
+
+  tasks:
+  - name: Execute schema.sql on database
+    postgresql_db:
+      name: "{{POSTGRESQL_DB}}"
+      state: restore
+      target: /etc/postgresql/10/main/schema.sql
+
+- hosts: server02_postgres
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: Enable and restart the PostgreSQL service
+    systemd:
+      name: postgresql
+      enabled: yes
+      masked: no
+      state: restarted

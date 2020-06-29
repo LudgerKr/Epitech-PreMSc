@@ -1,0 +1,13 @@
+[Unit]
+Description="uWSGI instance for poll"
+
+[Service]
+EnvironmentFile=/home/root/app/.env
+User=root
+Group=www-data
+WorkingDirectory=/home/root/app/poll/
+ExecStart=/usr/local/bin/uwsgi --socket 0.0.0.0:80 --protocol=http --wsgi-file /home/root/app/poll/wsgi.py --thunder-lock --enable-threads --callable app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

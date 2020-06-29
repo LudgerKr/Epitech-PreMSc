@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Associations</title>
+    <link rel="icon" type="image/x-icon" href="img/mairie/favicon.ico" />
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/hugo.css">
+
+</head>
+<body style="position: relative;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/index.html">Acceuil</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="/events" role="button" aria-haspopup="true" aria-expanded="false">Evénements</a>
+                <div class="submenu">
+                    <a class="btn btn-primary" href="/archives">Passés</a>
+                    <a class="btn btn-primary" href="/upcomings">Prochainement</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/archives">Archives</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/associations">Associations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/municipalcouncil">Conseil Municipal</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/calendar/calendar">Calendrier</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/contact/formulaire">Contact</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Associations</title>
+    <link rel="stylesheet" href="/css/sidebar.css">
+
+</head>
+<body style="position: fixed;">
+<div class="sidebar-container">
+    <div class="sidebar-logo">
+        <a href="/index.html" style="color: white">Mairie de Paris</a>
+    </div>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+<script type="text/javascript">
+    var idx, searchInput, searchResults = null
+    var documents = []
+
+    function renderSearchResults(results)
+    {
+        if (results.length > 0)
+        {
+            if (results.length > 9)
+            {
+                results = results.slice(0,10)
+            }
+            searchResults.innerHTML = ''
+            results.forEach(result =>
+            {
+                    
+                    var article = document.createElement('article')
+                    article.innerHTML = `
+                                            <div class="evenementsSearch">
+                                                <a href="${result.ref}"> <p class="title">${documents[result.ref].title}</p> </a>                                                <br>
+                                            </div>
+                                        `
+                searchResults.appendChild(article)
+            })
+        }
+        else
+            {
+             searchResults.innerHTML = '<div class="noResultSearch"><p>No results found</p></div>'
+            }
+    }
+    function registerSearchHandler()
+    {
+        // register on input event
+        searchInput.oninput = function(event)
+        {
+            
+            if (searchInput.value == '')
+            {
+                searchResults.innerHTML = ''
+            }
+            else
+                {
+                
+                var query = event.target.value
+                
+                var results = idx.search(query + '*')
+                
+                renderSearchResults(results)
+            }
+        }
+        
+        searchInput.focus()
+        searchInput.placeholder = ''
+    }
+    window.onload = function() {
+        searchInput = document.getElementById('search-input')
+        searchResults = document.getElementById('search-results')
+        myFunction();
+    }
+    function myFunction() {
+
+        let typeSearch = document.getElementById('typeSearch').value;
+
+        console.log(typeSearch);
+
+        try {
+            var data = [
+                fetch('/events/index.json').then(res => res.json()),
+                fetch('/associations/index.json').then(res => res.json()),
+                fetch('/municipalcouncil/index.json').then(res => res.json())
+            ];
+            switch (typeSearch) {
+                case "events": {
+                    data[0].then(
+                        res => {
+                            
+                            idx = lunr(function () {
+                                this.ref('url')
+                                this.field('title')
+                                this.field('content')
+                                res.forEach(function (doc) {
+                                    this.add(doc)
+                                    documents[doc.url] =
+                                        {
+                                            'title': doc.title,
+                                            'content': doc.content,
+                                        }
+                                }, this)
+                            })
+                            
+                            registerSearchHandler();
+                        })
+                }
+                    break;
+                case "associations": {
+                    data[1].then(
+                        res => {
+                            
+                            idx = lunr(function () {
+                                this.ref('url')
+                                this.field('title')
+                                this.field('content')
+                                res.forEach(function (doc) {
+                                    this.add(doc)
+                                    documents[doc.url] =
+                                        {
+                                            'title': doc.title,
+                                            'content': doc.content,
+                                        }
+                                }, this)
+                            })
+                            
+                            registerSearchHandler();
+                        });
+                }
+                    break;
+                case "municipalcouncil": {
+                    data[2].then(
+                        res => {
+                            
+                            idx = lunr(function () {
+                                this.ref('url')
+                                this.field('title')
+                                this.field('content')
+                                res.forEach(function (doc) {
+                                    this.add(doc)
+                                    documents[doc.url] =
+                                        {
+                                            'title': doc.title,
+                                            'content': doc.content,
+                                        }
+                                }, this)
+                            })
+                            
+                            registerSearchHandler();
+                        });
+                }
+                    break;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+</script>
+
+<input id="search-input" type="text" placeholder="Loading..." name="search">
+<label for="typeSearch">
+    <select onchange="myFunction()" id="typeSearch">
+        <option>Choisissez votre type de recherche</option>
+        <option value="events">Evénement</option>
+        <option value="associations">Associations</option>
+        <option value="municipalcouncil">Conseil</option>
+    </select>
+</label>
+
+<section id="search-results" class="search"></section>
+</body>
+</html>
+    <ul class="sidebar-navigation">
+        <h3 class="header"><a href="/associations/">Liste des associations</a></h3>
+        
+        <li>
+            <a href="http://example.org/associations/associations5/">Associations5</a>
+        </li>
+        
+        <li>
+            <a href="http://example.org/associations/associations6/">Associations6</a>
+        </li>
+        
+        <li>
+            <a href="http://example.org/associations/associations7/">Associations7</a>
+        </li>
+        
+        <li>
+            <a href="http://example.org/associations/associations8/">Associations8</a>
+        </li>
+        
+        <li>
+            <a href="http://example.org/associations/associations10/">Associations9</a>
+        </li>
+        
+    </ul>
+</div>
+
+<div align="center">
+
+<h2 class="header"> La liste des associations </h2>
+<br><br>
+    
+    
+    
+    <table style="height: 60px; border-color: black; width: 600px;" border="10" cellspacing="10" cellpadding="4">
+        <tbody>
+        <tr>
+            <td align="center"><h3> Associations9</a></h3></td>
+        </tr>
+        <tr>
+            <td align="center"><img src="/img/associations/mementos.jpeg"  width="450" height="450"></td>
+        </tr>
+        <tr>
+            <td align="center"><h4><p>Lorem Elsass ipsum</p>
+
+<p>hoplageiss tellus ante libero, merci vielmols Coopé de Truchtersheim Carola elementum Salut bisamme hopla id nüdle météor barapli so Christkindelsmärik hopla schneck Gal. …</p><a href="http://example.org/associations/associations10/"> Voir la suite</a></h4></td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+
+
+    
+    <table style="height: 60px; border-color: black; width: 600px;" border="10" cellspacing="10" cellpadding="4">
+        <tbody>
+        <tr>
+            <td align="center"><h3> Associations9</a></h3></td>
+        </tr>
+        <tr>
+            <td align="center"><img src="/img/associations/mementos.jpeg"  width="450" height="450"></td>
+        </tr>
+        <tr>
+            <td align="center"><h4><p>Lorem Elsass ipsum</p>
+
+<p>hoplageiss tellus ante libero, merci vielmols Coopé de Truchtersheim Carola elementum Salut bisamme hopla id nüdle météor barapli so Christkindelsmärik hopla schneck Gal. …</p><a href="http://example.org/associations/associations9/"> Voir la suite</a></h4></td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+
+
+    
+    <table style="height: 60px; border-color: black; width: 600px;" border="10" cellspacing="10" cellpadding="4">
+        <tbody>
+        <tr>
+            <td align="center"><h3> Associations4</a></h3></td>
+        </tr>
+        <tr>
+            <td align="center"><img src="/img/associations/satanael.jpeg"  width="450" height="450"></td>
+        </tr>
+        <tr>
+            <td align="center"><h4><p>Lorem Elsass ipsum</p>
+
+<p>Huguette eleifend tellus turpis, Pfourtz ! Christkindelsmärik amet mamsell non Richard Schirmeck sed varius rossbolla knepfle quam. Salut bisamme ornare Spätzle sit elementum …</p><a href="http://example.org/associations/associations4/"> Voir la suite</a></h4></td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+
+
+    
+    <table style="height: 60px; border-color: black; width: 600px;" border="10" cellspacing="10" cellpadding="4">
+        <tbody>
+        <tr>
+            <td align="center"><h3> Associations3</a></h3></td>
+        </tr>
+        <tr>
+            <td align="center"><img src="/img/associations/morgana.png"  width="450" height="450"></td>
+        </tr>
+        <tr>
+            <td align="center"><h4><p>Lorem Elsass ipsum</p>
+
+<p>eget Christkindelsmärik kougelhopf aliquam hopla ornare ornare Spätzle amet, turpis, yeuh. schnaps dignissim geïz chambon Pellentesque nullam knack rossbolla Coopé de Truchtersheim …</p><a href="http://example.org/associations/associations3/"> Voir la suite</a></h4></td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+
+
+    
+
+<ul class="pagination justify-content-center">
+    
+    <li class="page-item">
+        <a href="/associations/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+        <a href="/associations/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <li class="page-item"><a class="page-link" href="/associations/">1</a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <li class="page-item active"><a class="page-link" href="/associations/page/2/">2</a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <li class="page-item"><a class="page-link" href="/associations/page/3/">3</a></li>
+    
+    
+    <li class="page-item">
+        <a href="/associations/page/3/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+        <a href="/associations/page/3/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div align="center">
+    <td><a href="#top" class="btn btn-primary">Retour en haut de la page</a></td>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div id="footer"; style="bottom: 0; left: 0; right: 0">
+    <table style="height: 10px;" class="table table-hover">
+        <tr class="table-info">
+            <th scope="row">© 2019 Copyright</th>
+            <td><h2><a class="btn btn-primary" href="/contact/formulaire">Contactez-nous</a></h2></td>
+        </tr>
+    </table>
+</div>
+</body>
+</div>
+</html>

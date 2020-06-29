@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>
+    <meta charset ="UTF -8">
+    <meta name =" viewport " content =" width =device -width , initial - scale =1.0 ">
+    <meta http-equiv ="X-UA-Compatible " content ="ie= edge ">
+    <title> {{ .Title }} </title>
+    {{ partial "header.html" . }}
+    {{ partial "sidebar.html" . }}
+
+</head>
+<div align="center">
+    <body>
+    <table style="height: 200px; border-color: black; width: 400px;" border="10" cellspacing="10" cellpadding="4">
+        <tbody>
+        <tr>
+            <td align="center"><img src="{{ .Params.Photo }}" width="450" height="450"></td>
+        </tr>
+    <tr><td align="center"><h3>Titre : {{ .Title }}</h3></td></tr>
+        <tr><td align="center"><h3>Domain : {{ .Params.Domain }}</h3></td></tr>
+        <tr><td align="center"><h3>Adresse : {{ .Params.Address }}</h3></td></tr>
+        <tr><td align="center"><h3>Liste des événements</h3>
+            {{ $t := .Title }}
+            {{ range (where .Site.RegularPages "Section" "events") }}
+            {{ if eq .Params.Association $t }}
+            <h5><a href="{{ .Permalink }}">{{ .Title }}</a></h5>
+            {{ end }}
+            {{ end }}
+        </td></tr>
+        <tr><td align="center"><h3>{{ .Content }}</h3></td></tr>
+        </tbody>
+    </table>
+    </body>
+</div>
+{{ partial "footer.html" . }}

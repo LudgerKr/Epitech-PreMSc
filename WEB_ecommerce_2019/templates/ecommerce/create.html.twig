@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create/Modify{% endblock %}
+
+{% form_theme formArticle 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+    {% if editMode %}
+        <h1>Modifier un article</h1>
+    {% else %}
+        <h1>Ajouter un article</h1>
+    {% endif %}
+    <div align="center">
+
+        {{ form_start(formArticle) }}
+
+        {{ form_row(formArticle.title, {'attr': {'placeholder': "Titre de l'article"}}) }}
+        {{ form_row(formArticle.category) }}
+        {{ form_row(formArticle.weight) }}
+        {{ form_row(formArticle.stock) }}
+        {{ form_row(formArticle.price) }}
+        {{ form_row(formArticle.content, {'attr': {'placeholder': "Contenu de l'article"}}) }}
+        {{ form_row(formArticle.imageMain, {'attr': {'placeholder': "URL de l'article"}}) }}
+
+        <button type="submit" class="btn btn-success">
+            {% if editMode %}
+                Enregistrer les modifications
+            {% else %}
+                Ajouter l'article</button>
+            {% endif %}
+        {{ form_end(formArticle) }}
+    </div>
+
+{% endblock %}

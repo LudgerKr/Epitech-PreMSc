@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create/Modify{% endblock %}
+
+{% form_theme formArticle 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+    {% if editMode %}
+        <h1>Modifier un article</h1>
+    {% else %}
+        <h1>Ajouter un article</h1>
+    {% endif %}
+
+    {{ form_start(formArticle) }}
+
+    {{ form_row(formArticle.title, {'attr': {'placeholder': "Titre de l'article"}}) }}
+    {{ form_row(formArticle.content, {'attr': {'placeholder': "Contenu de l'article", 'rows': 6}}) }}
+    {{ form_row(formArticle.category, {'attr': {'class': "selector"}})  }}
+    {{ form_row(formArticle.compatibility, {'attr': {'class': "selector"}}) }}
+    {{ form_row(formArticle.articleType, {'attr': {'class': "selector"}}) }}
+    {{ form_row(formArticle.articlePurpose, {'attr': {'class': "selector"}}) }}
+    {{ form_row(formArticle.brand, {'attr': {'class': "selector"}}) }}
+    {{ form_row(formArticle.height) }}
+    {{ form_row(formArticle.width) }}
+    {{ form_row(formArticle.length) }}
+    {{ form_row(formArticle.category) }}
+    {{ form_row(formArticle.weight) }}
+    {{ form_row(formArticle.stock) }}
+    {{ form_row(formArticle.price) }}
+    {{ form_row(formArticle.imageMain, {'attr': {'placeholder': "Main image"}}) }}
+    {{ form_row(formArticle.image1, {'attr': {'placeholder': "1 image"}}) }}
+    {{ form_row(formArticle.image2, {'attr': {'placeholder': "2 image"}}) }}
+    {{ form_row(formArticle.image3, {'attr': {'placeholder': "Main image"}}) }}
+
+    <button type="submit" class="btn btn-success">
+    {% if editMode %}
+        Enregistrer les modifications
+    {% else %}
+        Ajouter l'article</button>
+    {% endif %}
+    {{ form_end(formArticle) }}
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(document).ready(function() {
+        $('.selector').select2();
+    });
+</script>
+{% endblock %}

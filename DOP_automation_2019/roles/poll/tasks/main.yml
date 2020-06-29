@@ -1,0 +1,41 @@
+- hosts: server03_poll
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /home/root/app
+      state: directory
+      mode: '0755'
+
+  - name: Extract poll.tar
+    unarchive:
+      src: ../../../poll.tar
+      dest: /home/root/app
+
+  - name: Install Python requirements
+    pip:
+      requirements: /home/root/app/poll/requirements.txt
+      executable: pip3
+
+  - name: Verify ~/app/result/.env exists
+    file:
+      path: /home/root/app/.env
+      state: touch
+
+  - name: Set REDIS_HOST
+    lineinfile:
+      dest: /home/root/app/.env
+      regexp: "^REDIS_HOST="
+      line: "REDIS_HOST={{ REDIS_HOST }}"
+
+  - name: Copy service for systemd
+    copy:
+      src: ../files/poll.service
+      dest: /etc/systemd/system/poll.service
+
+  - name: Start Poll service
+    systemd:
+      name: poll.service
+      state: restarted
+      enabled: yes
+      masked: no

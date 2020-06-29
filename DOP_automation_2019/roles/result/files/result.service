@@ -1,0 +1,10 @@
+[Unit]
+Description=Result Application
+
+[Service]
+WorkingDirectory=/root/app/result
+ExecStart=node --require dotenv/config server.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

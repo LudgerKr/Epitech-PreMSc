@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Profil {% endblock %}
+
+{% block body %}
+
+    <section class="user">
+        <user>
+            <h2>Hi {{ app.user.username }} ! </h2>
+            <h4>Your informations :</h4>
+            <p>Email : {{ app.user.email }}</p>
+            <p>Birthdate : {{ app.user.birthdate | date('d/m/Y') }}</p>
+            <p>Age : {{ app.user.getAge() }} years old</p>
+
+            <a href="{{ path('profil_edit_with_password', {'id': app.user.id}) }}" class="btn btn-primary">Modify my profil with password</a>
+            <a href="{{ path('profil_edit_without_password', {'id': app.user.id}) }}" class="btn btn-secondary">Modify my profil without password</a>
+            <a href="{{ path('user_delete', {'id': app.user.id}) }}" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete my profil</a>
+            <br>
+            <br>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('excel_article') }}" class="btn btn-primary">Create XLS Article file</a>
+                <a href="{{ path('excel_user') }}" class="btn btn-secondary">Create XLS User file</a>
+            {% endif %}
+            <a href="{{ path('excel_profile') }}" class="btn btn-secondary">Create XLS Profile file</a>
+        </user>
+    </section>
+
+{% endblock %}

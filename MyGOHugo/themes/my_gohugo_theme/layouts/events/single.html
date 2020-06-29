@@ -1,0 +1,58 @@
+<head>
+    <title> {{ .Title }} </title>
+    {{ partial "header.html" . }}
+    {{ partial "sidebar_calendar.html" . }}
+
+</head>
+<div align="center">
+    {{ if eq .Params.Draft true }}
+
+    <body>
+    <h3>Données non disponible pour le moment</h3>
+    {{ else }}
+    <table style="height: 200px; border-color: black; width: 400px;" border="10" cellspacing="10" cellpadding="4">
+        <tbody>
+        <tr>
+            {{ partial "map.html" . }}
+        </tr>
+        <tr>
+            <h3><td>Titre : {{ .Title }}</td></h3>
+        </tr>
+        <tr>
+            <h3><td>Date : {{ .Date.Format "January 2, 2006 15:04" }}</td></h3>
+        </tr>
+        <tr>
+            <h3><td>Description : {{ .Description }}</td></h3>
+        </tr>
+        <tr>
+            <h3><td>Adresse : {{ .Params.Address }}</td></h3>
+        </tr>
+        <tr>
+            <h3><td>Code Postal : {{ .Params.PostalCode }}</td></h3>
+        </tr>
+        <tr>
+            <h3><td>Ville : {{ .Params.City }}</td></h3>
+        </tr>
+        <tr>
+            <h3><td> {{ dateFormat "January 2, 2006 15:04" .Params.When }}</td></h3>
+        </tr>
+        <tr>
+            <h3><td>Association:<a href="/associations/{{ lower .Params.Association }}"> {{ .Params.Association }}</a> </td></h3>
+        </tr>
+        <tr>
+            <h3><td>Latitude: {{ .Params.Latitude }}</td></h3>
+        </tr>
+        <tr>
+            <h3><td>Longitude: {{ .Params.Longitude }}</td></h3>
+        </tr>
+        <tr>
+            <h3><td>{{ .Content }}</td></h3>
+        </tr>
+        </tbody>
+    </table>
+    </body>
+
+</div>
+
+{{ partial "footer.html" . }}
+{{ end }}
